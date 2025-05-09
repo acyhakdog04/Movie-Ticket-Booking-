@@ -1,0 +1,165 @@
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background-image: url('https://png.pngtree.com/background/20230618/original/pngtree-blank-movie-ticket-with-popcorn-bucket-filmstrip-clapperboard-and-camera-in-picture-image_3709549.jpg');
+  background-size: cover;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  color: #f5f5f5;
+  margin: 0;
+  padding: 0 20px;
+}
+
+/* Header Styling */
+header {
+  background: rgba(0, 0, 0, 0.6);
+  padding: 20px 40px;
+  color: #f1f1f1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 10px;
+  margin-top: 20px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+}
+
+header h1 {
+  margin: 0;
+  font-size: 2.2rem;
+  font-weight: bold;
+  text-shadow: 1px 1px 3px #000;
+}
+
+header a {
+  background-color: #f1c40f;
+  color: #1e1e1e;
+  text-decoration: none;
+  padding: 12px 22px;
+  border-radius: 8px;
+  font-weight: bold;
+  transition: background 0.3s, transform 0.2s;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+}
+
+header a:hover {
+  background-color: #e67e22;
+  transform: scale(1.05);
+}
+
+/* Movie List Layout */
+.movie-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 35px;
+  margin: 60px auto;
+  max-width: 1200px;
+}
+
+/* Movie Cards */
+.movie-card {
+  background-color: #2a2a2d;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  transition: transform 0.3s;
+}
+
+.movie-card:hover {
+  transform: scale(1.03);
+}
+
+.movie-card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  display: block;
+}
+
+.movie-info {
+  padding: 15px;
+}
+
+.movie-title {
+  font-size: 1.2rem;
+  margin-bottom: 5px;
+}
+
+.movie-seats {
+  font-size: 0.95rem;
+  color: #ccc;
+}
+
+/* Book Button */
+.book-btn {
+  margin-top: 10px;
+  background: #99c1d0;
+  color: rgb(11, 11, 11);
+  border: none;
+  padding: 10px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.3s;
+}
+
+.book-btn:hover {
+  background: #6a11cb;
+}
+
+/* Modal for Booking Form */
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #1f1f1f;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+  display: none;
+  z-index: 1000;
+}
+
+.modal input {
+  display: block;
+  width: 100%;
+  margin-top: 10px;
+  padding: 8px;
+  border: none;
+  border-radius: 6px;
+}
+
+.modal button {
+  margin-top: 12px;
+  background-color: #4a00e0;
+  color: white;
+  border: none;
+  padding: 10px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* Overlay for Modal */
+.overlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0,0,0,0.5);
+  display: none;
+  z-index: 999;
+}
+
+/* Feedback Message */
+.message {
+  text-align: center;
+  margin-top: 10px;
+  font-size: 0.9rem;
+}
+
+.success {
+  color: #00e676;
+}
+
+.error {
+  color: #ff5252;
+}

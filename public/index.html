@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>🎥 CineZone</title>
+  <link rel="stylesheet" href="index.css">
+ 
+</head>
+<body>
+  <header>
+    <h1>🎥 CineZone</h1>
+    <a href="booking.html">View Bookings</a>
+  </header>
+
+  <div class="movie-list" id="movieList"></div>
+
+  <div class="overlay" id="overlay" onclick="closeModal()"></div>
+  <div class="modal" id="modal">
+    <h3 id="modalTitle">Book Tickets</h3>
+    <input type="text" id="customerName" placeholder="Your Name" />
+    <input type="number" id="seatCount" placeholder="Number of Seats" min="1" />
+    <button onclick="submitModal()">Confirm Booking</button>
+    <p id="modalMsg" class="message"></p>
+  </div>
+
+  <script>
+    let selectedMovieId = null;
+    let selectedMovieTitle = "";
+
+    async function fetchMovies() {
+      const res = await fetch("/movies");
+      const movies = await res.json();
+      const container = document.getElementById("movieList");
+      container.innerHTML = "";
+
+      movies.forEach(movie => {
+        const card = document.createElement("div");
+        card.className = "movie-card";
+        card.innerHTML = `
+          <img src="${movie.image}" alt="${movie.title} Poster" />
+          <div class="movie-info">
+            <div class="movie-title">${movie.title}</div>
+            <div class="movie-seats">Seats left: ${movie.seats}</div>
+            <button class="book-btn" onclick="openModal(${movie.id}, '${movie.title}')">Book Now</button>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function openModal(id, title) {
+      selectedMovieId = id;
+      selectedMovieTitle = title;
+      document.getElementById("modalTitle").innerText = `Book: ${title}`;
+      document.getElementById("customerName").value = "";
+      document.getElementById("seatCount").value = "";
+      document.getElementById("modalMsg").innerText = "";
+      document.getElementById("overlay").style.display = "block";
+      document.getElementById("modal").style.display = "block";
+    }
+
+    function closeModal() {
+      document.getElementById("overlay").style.display = "none";
+      document.getElementById("modal").style.display = "none";
+    }
+
+    async function submitModal() {
+      const name = document.getElementById("customerName").value.trim();
+      const seats = parseInt(document.getElementById("seatCount").value);
+      const msg = document.getElementById("modalMsg");
+
+      if (!name || !seats || seats < 1) {
+        msg.textContent = "Please enter valid name and seat number.";
+        msg.className = "message error";
+        return;
+      }
+
+      const res = await fetch("/book", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ movieId: selectedMovieId, customerName: name, numberOfSeats: seats })
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        msg.textContent = `🎉 Booked ${seats} seats for ${selectedMovieTitle}!`;
+        msg.className = "message success";
+        setTimeout(() => {
+          closeModal();
+          fetchMovies();
+        }, 1000);
+      } else {
+        msg.textContent = data.message;
+        msg.className = "message error";
+      }
+    }
+
+    fetchMovies();
+  </script>
+</body>
+</html>

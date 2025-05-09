@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>🎟️ My Bookings</title>
+  <link rel="stylesheet" href="booking.css">
+</head>
+<body>
+
+<header>
+  <h1>🎟️ My Bookings</h1>
+  <a href="index.html">← Back to Home</a>
+</header>
+
+<div class="booking-container" id="bookingCards">
+  <p class="no-bookings">Loading your bookings...</p>
+</div>
+
+<script>
+  async function fetchBookings() {
+    try {
+      const res = await fetch("/bookings");
+      const bookings = await res.json();
+      const container = document.getElementById("bookingCards");
+      container.innerHTML = "";
+
+      if (!bookings.length) {
+        container.innerHTML = "<p class='no-bookings'>You have no current bookings.</p>";
+        return;
+      }
+
+      bookings.forEach(b => {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.innerHTML = `
+          <h2>${b.movieTitle}</h2>
+          <p><strong>Booking ID:</strong> ${b.id}</p>
+          <p><strong>Movie ID:</strong> ${b.movieId}</p>
+          <p><strong>Name:</strong> ${b.customerName}</p>
+          <p><strong>Seats:</strong> ${b.numberOfSeats}</p>
+          <button class="cancel" onclick="removeCard(${b.id})">Cancel Booking</button>
+        `;
+        container.appendChild(card);
+      });
+    } catch (err) {
+      document.getElementById("bookingCards").innerHTML =
+        "<p class='no-bookings'>Failed to load bookings.</p>";
+      console.error(err);
+    }
+  }
+
+  function removeCard(id) {
+    const cards = document.querySelectorAll(".card");
+    cards.forEach(card => {
+      if (card.innerHTML.includes(`Booking ID:</strong> ${id}`)) {
+        card.remove();
+      }
+    });
+  }
+
+  fetchBookings();
+</script>
+
+</body>
+</html>
